@@ -1,0 +1,33 @@
+<template>
+  <require from="./date-format"></require>
+  <div class="row container-fluid">
+    <div class="col">
+      <form submit.trigger="addTodo()">
+        <label for ="title">Title: </label><br>
+        <input type="text" value.bind="todoTitle" required><br>
+        <label for ="description">Description: </label><br>
+        <textarea  value.bind="todoDescription" rows="10" cols="30"></textarea>
+        <br><br>
+        <label for ="deadline">Deadline: </label><br>
+        <input type="date" value.bind="todoDeadline" ><br><br>
+        <button class="btn btn-primary" type="submit"  disabled.bind="!todoTitle || !todoDescription">Add Todo</button>
+      </form>
+    </div>
+    
+    <div class="col" style="background-image: url('https://unsplash.com/photos/_kUxT8WkoeY');">
+      <br><br>
+      <h2>To Do List</h2>
+      <ul>
+        <li repeat.for="todo of todos">
+          <input type="checkbox" checked.bind="todo.done">
+          <span css="text-decoration: ${todo.done ? 'line-through' : 'none'}">
+            <b>${todo.title}</b><br>
+            ${todo.description} <br>
+            <small><i> Due: ${todo.deadline}</i></small>
+          </span><br><br>
+          <button class="btn btn-primary" click.trigger = "confirmRemove(todo)">Remove</button><br><br>
+        </li>
+      </ul>
+    </div>
+
+</template>

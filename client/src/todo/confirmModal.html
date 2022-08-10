@@ -1,0 +1,24 @@
+<template>
+  <style>
+    div.div{
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 25px;
+        background-color: rgb(237, 237, 241);
+        padding: 30px;
+    }
+  </style>
+
+  <div class="div">
+  <ai-dialog>
+     <ai-dialog-body>
+        <h2>${message}</h2>
+     </ai-dialog-body>
+        <i>Note: This dialog will close automatically after 5 seconds.</i><br><br>
+     <ai-dialog-footer>
+        <button class="btn btn-light" click.trigger = "controller.cancel()">No</button>
+        <button class="btn btn-danger" click.trigger = "controller.ok(message)">Yes</button>
+     </ai-dialog-footer>	
+  </ai-dialog>	
+  </div>
+</template>
