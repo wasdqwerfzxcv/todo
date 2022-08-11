@@ -5,7 +5,11 @@ import {Prompt} from './confirmModal.js';
 @inject(DialogService)
 export class todo{
   constructor(dialogService){
-    this.todos = [];
+    this.todos = [{title:"Your todo appears here",
+      description: "I am a todo description",
+      deadline: "-",
+      done:false}];
+      
     this.todoDescription = ' ';
     this.todoTitle = ' ';
     this.todoDeadline = '-';
@@ -32,7 +36,7 @@ export class todo{
       this.todoDescription = ' ';
 
     }
-    
+
   }
 
   removeTodo(todo){
