@@ -1,6 +1,6 @@
 import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
-import {Prompt} from './confirmModal.js';
+import {Prompt} from './confirmModal';
 
 @inject(DialogService)
 export class todo{
