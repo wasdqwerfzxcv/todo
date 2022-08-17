@@ -1,72 +1,62 @@
 import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
-import {Prompt} from './confirmModal';
+import {HttpClient} from 'aurelia-fetch-client';
+import axios from '../../node_modules/axios/index';
 
 @inject(DialogService)
 export class todo{
   constructor(dialogService){
-    this.todos = [{title:"Your todo appears here",
-      description: "I am a todo description",
-      deadline: "-",
-      done:false}];
-      
-    this.todoDescription = ' ';
-    this.todoTitle = ' ';
-    this.todoDeadline = '-';
+    this.todoList = [];
+    this.todoID = 0;
+    this.todoDescription = '';
+    this.todoTitle = '';
+    this.todoDeadline = '';
     this.dialogService = dialogService;
+    this.axios = require('axios').default;
+    this.httpClient = new HttpClient();
+    this.displayTodo();
   }
   
+  generateID(){
+    const { 
+      v1: uuidv1,
+      v4: uuidv4,
+    } = require('uuid');
+    this.todoID = uuidv1();
+  }
+
   addTodo(){
     if(this.todoDescription){
-      let todoData = {title:this.todoTitle,
+      this.generateID();
+      let todoData = {ID: this.todoID,
+                     title:this.todoTitle,
                      description: this.todoDescription,
                      deadline: this.todoDeadline,
                      done:false};
-
-      this.todos.push(todoData);
-
-      const axios = require('axios').default;
+      this.todoList.push(todoData);
       axios({
         method: 'post',
-        url: 'http://localhost:3000/todo',
+        url: 'http://10.228.30.226:3000/todo/',
         data: todoData
       });
+      this.todoTitle ='';
+      this.todoDescription = '';
       
-      this.todoTitle =' ';
-      this.todoDescription = ' ';
-
     }
 
   }
 
-  removeTodo(todo){
-    let index = this.todos.indexOf(todo);
-    if(index !== -1){
-      this.todos.splice(index,1);
-    }
+  displayTodo(){
+    this.httpClient.fetch('http://10.228.30.226:3000/todo/')
+        .then(response => response.json())
+        .then(data => {
+            this.todoList = data;
+        });
   }
 
-  confirmRemove(todo) {
-    this.dialogService.open( {viewModel: Prompt, model: 'Are you sure you want to remove this todo?' }).then(openDialogResult => {
-      // Note you get here when the dialog is opened, and you are able to close dialog
-      setTimeout(() => {
-        openDialogResult.controller.cancel('canceled outside after 5 sec')
-      }, 5000);
-
-      // Promise for the result is stored in openDialogResult.closeResult property
-      return openDialogResult.closeResult;}).then(response => {
-      console.log(response);
-      if (!response.wasCancelled) {
-         console.log('OK');
-         this.removeTodo(todo);
-      } else {
-         console.log('cancelled');
-      }
-      console.log(response.output);
-   });
- }
 
 }
+
 
 
 

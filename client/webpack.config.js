@@ -221,6 +221,9 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       ]}
     ]
   },
+  optimization: {
+    concatenateModules: false,
+  },
   plugins: [
     new DuplicatePackageCheckerPlugin(),
     new AureliaPlugin(),

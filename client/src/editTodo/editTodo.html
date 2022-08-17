@@ -1,0 +1,19 @@
+<template>
+  <require from="./date-format"></require>
+  <div class = "container">
+      <h1><b>To Do List <button style="float: right;" class="btn btn-primary btn-lg" click.trigger = "updateTodo(todoList)">Update</button></h1></b>
+        <div repeat.for="todo of todoList">
+          <div class="card">
+            <div class="card-body">
+              <b class="display-5"><input style="border: none transparent;" type="text" value.bind="todo.title" placeholder="${todo.title}"><br></b>
+                <b>Description:</b><br>
+                <input style="border: none transparent;" type="text" value.bind="todo.description" placeholder="${todo.description}"><br>
+                <b>Deadline:</b><br>
+                <input  type="date" value.bind="todo.deadline" placeholder=" ${todo.deadline}" required><br><br>
+                <button class="btn btn-danger btn-lg" click.delegate = "confirmRemove(todo)">Remove</button>
+            </div>
+          </div><br>
+        </div>
+  </div>
+</div>
+</template>

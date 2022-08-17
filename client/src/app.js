@@ -11,7 +11,9 @@ export class App {
        { route: ['','todo'],  name: 'todo',  
          moduleId: PLATFORM.moduleName("./todo/todo"),    nav: true, title:'Todo' },
        { route: 'about',  name: 'about',
-         moduleId: PLATFORM.moduleName("./about/about"), nav: true,    title:'About' }
+         moduleId: PLATFORM.moduleName("./about/about"), nav: true,    title:'About' },
+       { route: 'editTodo',  name: 'editTodo',
+         moduleId: PLATFORM.moduleName("./editTodo/editTodo"), nav: false,    title:'Edit Todo' }
     ]);
     this.router = router;
   }

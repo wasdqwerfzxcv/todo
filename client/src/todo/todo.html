@@ -7,26 +7,31 @@
         <label for ="title">Title: </label><br>
         <input type="text" value.bind="todoTitle" required><br>
         <label for ="description">Description: </label><br>
-        <textarea  value.bind="todoDescription" rows="10" cols="30"></textarea>
+        <textarea value.bind="todoDescription" rows="10" cols="30" required></textarea>
         <br><br>
         <label for ="deadline">Deadline: </label><br>
-        <input type="date" value.bind="todoDeadline" ><br><br>
-        <button class="btn btn-primary btn-lg" type="submit"  disabled.bind="!todoTitle || !todoDescription">Add Todo</button>
+        <input type="date" value.bind="todoDeadline" required><br><br>
+        <button class="btn btn-primary btn-lg" type="submit"  disabled.bind="!todoTitle">Add Todo</button>
       </form>
     </div>
+
     <div class="col">
-      <h1><b>To Do List</h1></b>
-      <ul style="list-style-type: none;">
-        <li repeat.for="todo of todos">
-          <input type="checkbox" checked.bind="todo.done">
-          <span css="text-decoration: ${todo.done ? 'line-through' : 'none'}">
-            <b>${todo.title}</b><br>
-            ${todo.description} <br>
-            <small><i> Due: ${todo.deadline}</i></small>
-          </span><br><br>
-          <button class="btn btn-primary btn-lg" click.trigger = "confirmRemove(todo)">Remove</button><br><br>
-        </li>
-      </ul>
+      <h1><b>To Do List <a route-href = "editTodo">
+      <button class="btn  btn-lg"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+      </svg></button></a></b></h1>
+        <div repeat.for="todo of todoList">
+          <div class="card">
+            <div class="card-body">
+              <b class="display-5">${todo.title}<br></b>
+                <b>Description:</b><br>
+                <p>${todo.description}</p>
+                <b>Deadline:</b><br>
+                <p>${todo.deadline}</p>
+            </div>
+          </div><br>
+        </div>
     </div>
   </div>
 </div>
