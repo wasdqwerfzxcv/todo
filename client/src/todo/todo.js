@@ -1,6 +1,6 @@
 import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
+// import {HttpClient} from 'aurelia-fetch-client';
 import axios from '../../node_modules/axios/index';
 
 @inject(DialogService)
@@ -13,10 +13,13 @@ export class todo{
     this.todoDeadline = '';
     this.dialogService = dialogService;
     this.axios = require('axios').default;
-    this.httpClient = new HttpClient();
+    // this.httpClient = new HttpClient();
+  }
+
+  created(){
     this.displayTodo();
   }
-  
+
   generateID(){
     const { 
       v1: uuidv1,
@@ -31,8 +34,8 @@ export class todo{
       let todoData = {ID: this.todoID,
                      title:this.todoTitle,
                      description: this.todoDescription,
-                     deadline: this.todoDeadline,
-                     done:false};
+                     deadline: this.todoDeadline
+                     };
       this.todoList.push(todoData);
       axios({
         method: 'post',
@@ -47,13 +50,17 @@ export class todo{
   }
 
   displayTodo(){
-    this.httpClient.fetch('http://10.228.30.226:3000/todo/')
-        .then(response => response.json())
-        .then(data => {
-            this.todoList = data;
-        });
-  }
+    // this.httpClient.fetch('http://10.228.30.226:3000/todo/')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         this.todoList = data;
+    //     });
 
+    this.axios.get('http://10.228.30.226:3000/todo/')
+        .then((response)=>{
+         this.todoList = response.data;
+        })
+  }
 
 }
 

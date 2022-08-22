@@ -7,6 +7,8 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
+const zlib = require('zlib');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -24,7 +26,6 @@ const cssRules = [
     loader: 'css-loader'
   }
 ];
-
 
 module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   resolve: {
@@ -239,6 +240,28 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       filename: production ? '[name].[contenthash].bundle.css' : '[name].[fullhash].bundle.css',
       chunkFilename: production ? '[name].[contenthash].chunk.css' : '[name].[fullhash].chunk.css'
     }),
+
+    new CompressionPlugin({
+      filename: "[path][base].gz",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+    
+    new CompressionPlugin({
+      filename: "[path][base].br",
+      algorithm: "brotliCompress",
+      test: /\.(js|css|html|svg)$/,
+      compressionOptions: {
+        params: {
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+        },
+      },
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+
     new CopyWebpackPlugin({
       patterns: [
         { from: 'static', to: outDir, globOptions: { ignore: ['.*'] } }
@@ -252,5 +275,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
      * `del` (https://www.npmjs.com/package/del), or `rimraf` (https://www.npmjs.com/package/rimraf).
      */
     new CleanWebpackPlugin()
+    
   ]
-});
+}
+);

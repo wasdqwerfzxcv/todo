@@ -1,7 +1,6 @@
 import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
 import {Prompt} from './confirmModal';
-import {HttpClient} from 'aurelia-fetch-client';
 import axios from '../../node_modules/axios/index';
 
 @inject(DialogService)
@@ -10,16 +9,17 @@ export class todo{
     this.todoList = [];
     this.dialogService = dialogService;
     this.axios = require('axios').default;
-    this.httpClient = new HttpClient();
+  }
+
+  created(){
     this.displayTodo();
   }
   
   displayTodo(){
-    this.httpClient.fetch('http://10.228.30.226:3000/todo/')
-        .then(response => response.json())
-        .then(data => {
-            this.todoList = data;
-        });
+    this.axios.get('http://10.228.30.226:3000/todo/')
+        .then((response)=>{
+         this.todoList = response.data;
+        })
   }
 
   removeTodo(todo){
@@ -52,15 +52,7 @@ export class todo{
    });
  }
 
-//  updateTodo(todo){
-//   axios({
-//     method: 'POST',
-//     url: 'http://10.228.30.226:3000/todo/' + todo.ID,
-//     data: todo
-//   });
-//  }
-
- updateTodo(todoList){
+updateTodo(todoList){
   todoList.forEach(todo => {
     axios({
       method: 'POST',
@@ -70,7 +62,8 @@ export class todo{
   });
 
   alert("Update successfully!")
- }
+}
+
 
 }
 
