@@ -7,9 +7,7 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const zlib = require('zlib');
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 
 // config helpers:
@@ -72,7 +70,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     // https://webpack.js.org/plugins/split-chunks-plugin/
     splitChunks: {
       hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
-      chunks: "async",
+      chunks: "intial",
       // sizes are compared against source before minification
 
       // This is the HTTP/1.1 optimized maxSize.
@@ -243,27 +241,6 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
       filename: production ? '[name].[contenthash].bundle.css' : '[name].[fullhash].bundle.css',
       chunkFilename: production ? '[name].[contenthash].chunk.css' : '[name].[fullhash].chunk.css'
-    }),
-
-    new CompressionPlugin({
-      filename: "[path][base].gz",
-      algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
-    
-    new CompressionPlugin({
-      filename: "[path][base].br",
-      algorithm: "brotliCompress",
-      test: /\.(js|css|html|svg)$/,
-      compressionOptions: {
-        params: {
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-        },
-      },
-      threshold: 10240,
-      minRatio: 0.8,
     }),
 
     new CopyWebpackPlugin({
