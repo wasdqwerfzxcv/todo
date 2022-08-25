@@ -7,8 +7,10 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
 const zlib = require('zlib');
+const TerserPlugin = require('terser-webpack-plugin');
+
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -54,10 +56,14 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   output: {
     path: outDir,
     publicPath: baseUrl,
+    pathinfo: false,
     filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
   },
   optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+    concatenateModules: false,
     runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
     // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
     // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
@@ -66,7 +72,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     // https://webpack.js.org/plugins/split-chunks-plugin/
     splitChunks: {
       hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
-      chunks: "initial",
+      chunks: "async",
       // sizes are compared against source before minification
 
       // This is the HTTP/1.1 optimized maxSize.
@@ -121,7 +127,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
           minSize: 10000  // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
         }
 
-        /* This is the HTTP/2 optimized cacheGroup configuration.
+        /*  This is the HTTP/2 optimized cacheGroup configuration.
         // generic 'initial/sync' vendor node module splits: separates out larger modules
         vendorSplit: { // each node module as separate chunk file if module is bigger than minSize
           test: /[\\/]node_modules[\\/]/,
@@ -180,7 +186,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
           reuseExistingChunk: true,
           enforce: true // create chunk regardless of the size of the chunk
         }
-        */
+         */
       }
     }
   },
@@ -193,7 +199,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     port: port || project.platform.port,
     host: host
   },
-  devtool: production ? undefined : 'cheap-module-source-map',
+  devtool: production ? undefined : 'source-map',
   module: {
     rules: [
       // CSS required in JS/TS files should use the style-loader that auto-injects it into the website
@@ -222,9 +228,6 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       ]}
     ]
   },
-  optimization: {
-    concatenateModules: false,
-  },
   plugins: [
     new DuplicatePackageCheckerPlugin(),
     new AureliaPlugin(),
@@ -235,6 +238,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
         baseUrl
       }
     }),
+
     // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
     new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
       filename: production ? '[name].[contenthash].bundle.css' : '[name].[fullhash].bundle.css',
