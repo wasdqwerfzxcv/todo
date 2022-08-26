@@ -242,7 +242,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     }),
 
     new CompressionPlugin({
-      filename: "[path].gz[query]",
+      filename: "[path][base].gz",
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
