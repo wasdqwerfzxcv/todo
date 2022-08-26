@@ -197,8 +197,8 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
     allowedHosts: 'all',
-    compress: true,
   },
+  
   devtool: production ? undefined : 'source-map',
   module: {
     rules: [
