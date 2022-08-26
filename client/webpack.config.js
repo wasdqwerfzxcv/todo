@@ -242,7 +242,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     }),
 
     new CompressionPlugin({
-      asset: "[path].gz[query]",
+      filename: "[path].br[query]",
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
@@ -250,7 +250,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     }),
     
     new CompressionPlugin({
-      asset: "[path].br[query]",
+      filename: "[path][base].br",
       algorithm: "brotliCompress",
       test: /\.(js|css|html|svg)$/,
       compressionOptions: {
@@ -261,9 +261,9 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       threshold: 10240,
       minRatio: 0.8,
     }),
-    
+
     new BrotliPlugin({
-			asset: '[path].br[query]',
+			filename: '[path].br[query]',
 			test: /\.(js|css|html|svg)$/,
 			threshold: 10240,
 			minRatio: 0.8
