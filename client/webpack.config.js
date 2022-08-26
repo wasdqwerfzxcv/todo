@@ -199,7 +199,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     port: port || project.platform.port,
     allowedHosts: 'all',
     // compress: true,
-    contentBase: path.join(__dirname, 'dist'),
+    static:'./dist',
     host: "0.0.0.0"
   },
 
