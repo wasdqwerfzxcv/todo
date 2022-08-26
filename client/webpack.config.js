@@ -196,7 +196,8 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     open: project.platform.open,
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
-    host: host
+    allowedHosts: 'all',
+    compress: true,
   },
   devtool: production ? undefined : 'source-map',
   module: {
@@ -238,13 +239,13 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       }
     }),
 
-    new CompressionPlugin({
-      filename: "[path][base].gz",
-      algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
+    // new CompressionPlugin({
+    //   filename: "[path][base].gz",
+    //   algorithm: "gzip",
+    //   test: /\.js$|\.css$|\.html$/,
+    //   threshold: 10240,
+    //   minRatio: 0.8,
+    // }),
     
     new CompressionPlugin({
       filename: "[path][base].br",
