@@ -198,7 +198,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
     allowedHosts: 'all',
-    // compress: true,
+    compress: false,
     static:'./dist',
     host: "0.0.0.0"
   },
