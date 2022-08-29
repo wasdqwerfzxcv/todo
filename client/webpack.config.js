@@ -37,7 +37,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     alias: {
       // https://github.com/aurelia/dialog/issues/387
       // Uncomment next line if you had trouble to run aurelia-dialog on IE11
-      // 'aurelia-dialog': path.resolve(__dirname, 'node_modules/aurelia-dialog/dist/umd/aurelia-dialog.js'),
+      'aurelia-dialog': path.resolve(__dirname, 'node_modules/aurelia-dialog/dist/umd/aurelia-dialog.js'),
 
       // https://github.com/aurelia/binding/issues/702
       // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
@@ -48,14 +48,13 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   entry: {
     app: [
       // Uncomment next line if you need to support IE11
-      // 'promise-polyfill/src/polyfill',
+      'promise-polyfill/src/polyfill',
       'aurelia-bootstrapper'
     ]
   },
   mode: production ? 'production' : 'development',
   output: {
-    // path: outDir,
-    path: path.resolve(__dirname, 'dist'),
+    path: outDir,
     publicPath: baseUrl,
     pathinfo: false,
     filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
@@ -64,7 +63,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()],
-    concatenateModules: false,
+    // concatenateModules: false,
     runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
     // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
     // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
@@ -73,7 +72,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     // https://webpack.js.org/plugins/split-chunks-plugin/
     splitChunks: {
       hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
-      chunks: "async",
+      chunks: "initial",
       // sizes are compared against source before minification
 
       // This is the HTTP/1.1 optimized maxSize.
@@ -201,7 +200,6 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     allowedHosts: 'all',
     compress: false,
     static:'./dist',
-    host: "0.0.0.0"
   },
 
   devtool: production ? undefined : 'source-map',
