@@ -7,7 +7,6 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
 const CompressionPlugin = require('compression-webpack-plugin');
 const zlib = require('zlib');
 const BrotliPlugin = require('brotli-webpack-plugin');
@@ -61,8 +60,6 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
   },
   optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()],
     // concatenateModules: false,
     runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
     // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
@@ -72,7 +69,8 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     // https://webpack.js.org/plugins/split-chunks-plugin/
     splitChunks: {
       hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
-      chunks: "initial",
+      // chunks: "initial",
+      chunks: 'all',
       // sizes are compared against source before minification
 
       // This is the HTTP/1.1 optimized maxSize.
