@@ -70,7 +70,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     splitChunks: {
       hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
       // chunks: "initial",
-      chunks: 'all',
+      chunks: 'async',
       // sizes are compared against source before minification
 
       // This is the HTTP/1.1 optimized maxSize.
