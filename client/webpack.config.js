@@ -121,7 +121,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
           priority: 0,
           reuseExistingChunk: true,
           minSize: 10000  // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
-        }
+        },
 
         /*  This is the HTTP/2 optimized cacheGroup configuration.
         // generic 'initial/sync' vendor node module splits: separates out larger modules
@@ -183,8 +183,8 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
           enforce: true // create chunk regardless of the size of the chunk
         }
          */
-      }
-    }
+      },
+    },
   },
   performance: { hints: false },
   devServer: {
