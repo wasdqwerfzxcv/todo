@@ -69,8 +69,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     // https://webpack.js.org/plugins/split-chunks-plugin/
     splitChunks: {
       hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
-      // chunks: "initial",
-      chunks: 'async',
+      chunks: "initial",
       // sizes are compared against source before minification
 
       // This is the HTTP/1.1 optimized maxSize.
