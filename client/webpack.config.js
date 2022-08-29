@@ -7,8 +7,8 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const CompressionPlugin = require('compression-webpack-plugin');
-// const zlib = require('zlib');
+const CompressionPlugin = require('compression-webpack-plugin');
+const zlib = require('zlib');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -54,7 +54,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   output: {
     path: outDir,
     publicPath: baseUrl,
-    // pathinfo: false,
+    pathinfo: false,
     filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
   },
@@ -195,8 +195,8 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     port: port || project.platform.port,
     host: host,
     // allowedHosts: 'all',
-    // compress: true,
-    // static:'./dist',
+    compress: true,
+    static:'./dist',
   },
 
   devtool: production ? undefined : 'cheap-module-source-map',
@@ -239,26 +239,26 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
       }
     }),
 
-    // new CompressionPlugin({
-    //   filename: "[path][base].gz",
-    //   algorithm: "gzip",
-    //   test: /\.js$|\.css$|\.html$/,
-    //   threshold: 10240,
-    //   minRatio: 0.8,
-    // }),
+    new CompressionPlugin({
+      filename: "[path][base].gz",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
     
-    // new CompressionPlugin({
-    //   filename: "[path][base].br",
-    //   algorithm: "brotliCompress",
-    //   test: /\.(js|css|html|svg)$/,
-    //   compressionOptions: {
-    //     params: {
-    //       [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-    //     },
-    //   },
-    //   threshold: 10240,
-    //   minRatio: 0.8,
-    // }),
+    new CompressionPlugin({
+      filename: "[path][base].br",
+      algorithm: "brotliCompress",
+      test: /\.(js|css|html|svg)$/,
+      compressionOptions: {
+        params: {
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+        },
+      },
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
 
     // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
     new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
