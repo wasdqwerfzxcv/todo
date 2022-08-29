@@ -194,11 +194,11 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
     allowedHosts: 'all',
-    compress: false,
+    compress: true,
     static:'./dist',
   },
 
-  devtool: production ? undefined : 'source-map',
+  devtool: production ? undefined : 'cheap-module-source-map',
   module: {
     rules: [
       // CSS required in JS/TS files should use the style-loader that auto-injects it into the website
