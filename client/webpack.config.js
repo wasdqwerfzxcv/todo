@@ -46,7 +46,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
   entry: {
     app: [
       // Uncomment next line if you need to support IE11
-      'promise-polyfill/src/polyfill',
+      // 'promise-polyfill/src/polyfill',
       'aurelia-bootstrapper'
     ]
   },
@@ -59,7 +59,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
   },
   optimization: {
-    // concatenateModules: false,
+    concatenateModules: false,
     runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
     // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
     // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
@@ -193,6 +193,7 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     open: project.platform.open,
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
+    host: host,
     allowedHosts: 'all',
     compress: true,
     static:'./dist',
