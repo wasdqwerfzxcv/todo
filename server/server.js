@@ -3,6 +3,9 @@ const compression = require('compression')
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
+const http = require('http');
 // app.use(express.static(__dirname + '/public'));
 
 // app.use('/hello', (req, res) => {
@@ -10,6 +13,7 @@ const cors = require('cors');
 // });
 
 let todos = [];
+let quote = [];
 app.use(cors());
 app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -55,4 +59,19 @@ app.delete('/todo/:ID', (req, res) => {
     res.send('todo is deleted');
 });
 
-app.listen(process.env.PORT || 3000)
+// app.listen(process.env.PORT || 3000)
+
+const httpsServer = https.createServer({
+    key: fs.readFileSync('../client/key.pem'),
+    cert: fs.readFileSync('../client/cert.pem'),
+  }, app);
+
+const httpServer = http.createServer(app);
+
+httpServer.listen(3000, () => {
+    console.log('HTTP Server running on port 3000');
+});
+
+httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+});
