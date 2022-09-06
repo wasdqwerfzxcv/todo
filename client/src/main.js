@@ -6,7 +6,8 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'))
-    .plugin(PLATFORM.moduleName('aurelia-dialog'));
+    .plugin(PLATFORM.moduleName('aurelia-dialog'))
+    .plugin(PLATFORM.moduleName("aurelia-fontawesome"));
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
 

@@ -2,6 +2,7 @@ import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
 import {Prompt} from './confirmModal';
 import axios from '../../node_modules/axios/index';
+import {faFloppyDisk} from "@fortawesome/free-regular-svg-icons";
 
 @inject(DialogService)
 export class todo{
@@ -9,6 +10,7 @@ export class todo{
     this.todoList = [];
     this.dialogService = dialogService;
     this.axios = require('axios').default;
+    this.saveIcon = faFloppyDisk;
   }
 
   created(){
@@ -16,7 +18,7 @@ export class todo{
   }
   
   displayTodo(){
-    this.axios.get('http://10.228.30.226:3000/todo/')
+    this.axios.get('https://10.228.30.226:443/todo/')
         .then((response)=>{
          this.todoList = response.data;
         })
@@ -30,7 +32,7 @@ export class todo{
 
     axios({
       method: 'DELETE',
-      url: 'http://10.228.30.226:3000/todo/' + todo.ID
+      url: 'https://10.228.30.226:443/todo/' + todo.ID
     });
   }
 
@@ -56,7 +58,7 @@ updateTodo(todoList){
   todoList.forEach(todo => {
     axios({
       method: 'POST',
-      url: 'http://10.228.30.226:3000/todo/' + todo.ID,
+      url: 'https://10.228.30.226:443/todo/' + todo.ID,
       data: todo
     });
   });

@@ -2,6 +2,9 @@ import {DialogService} from 'aurelia-dialog';
 import {inject} from 'aurelia-framework';
 // import {HttpClient} from 'aurelia-fetch-client';
 import axios from '../../node_modules/axios/index';
+import {faPenToSquare,
+        faCirclePlus
+       } from "@fortawesome/free-solid-svg-icons";
 
 @inject(DialogService)
 export class todo{
@@ -13,6 +16,8 @@ export class todo{
     this.todoDeadline = '';
     this.dialogService = dialogService;
     this.axios = require('axios').default;
+    this.penIcon = faPenToSquare;
+    this.plusIcon = faCirclePlus;
     // this.httpClient = new HttpClient();
   }
 
@@ -39,7 +44,7 @@ export class todo{
       this.todoList.push(todoData);
       axios({
         method: 'post',
-        url: 'http://10.228.30.226:3000/todo/',
+        url: 'https://10.228.30.226:443/todo/',
         data: todoData
       });
       this.todoTitle ='';
@@ -56,7 +61,7 @@ export class todo{
     //         this.todoList = data;
     //     });
 
-    this.axios.get('http://10.228.30.226:3000/todo/')
+    this.axios.get('https://10.228.30.226:443/todo/')
         .then((response)=>{
          this.todoList = response.data;
         })
